@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>Windows on AWS</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <base href="../">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/vendor.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="js/modernizr.js"></script>
+    <script defer src="js/fontawesome/all.min.js"></script>
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+
+</head>
+
+<body id="top">
+
+
+    <!-- preloader
+    ================================================== -->
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+
+
+    <!-- header
+    ================================================== -->
+    <header class="s-header s-header--blog">
+        <div class="row">
+            <!-- remove logo
+            <div class="s-header__logo">
+                <a href="index.html">
+                    <img src="images/logo.svg" alt="Homepage">
+                </a>
+            </div>
+            -->
+
+            <nav class="s-header__nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li class="current"><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+
+            <a class="s-header__menu-toggle" href="#0" title="Menu">
+                <span class="s-header__menu-icon"></span>
+            </a>
+
+
+        </div> <!-- end row -->
+    </header> <!-- end s-header -->
+
+
+    <!-- blog content
+    ================================================== -->
+    <div class="blog-content">
+
+        <div class="row blog-post-wrap">
+            <div class="column large-12">
+
+                <article class="blog-post">
+
+                    <div class="blog-post__header">
+                        <h1 class="blog-post__title">Using Windows on a Mac with AWS</h1>
+                        
+                        <div class="blog-post__meta">
+
+                            <div class="blog-post__date">19 March 2022</div>
+          
+                            <p class="blog-post__cat">
+                                <a href="category.html">How-To</a>
+                            </p>
+          
+                         </div>
+                    </div> <!-- blog-post__header -->
+
+                    <div class="blog-post__thumb">
+                        <img src="images/blog_pics/002/windows-on-mac.jpg" 
+                             sizes="(max-width: 2400px) 100vw, 2400px" 
+                             alt="">
+                    </div>  <!-- blog-post__thumb -->
+
+                    <div class="blog-post__content">
+                           
+                           <p class="lead drop-cap">
+                           I was recently developing software for a colleague, Rob, at <a href='www.ecodata.tech'>EcoData Technology</a>.   
+                           The tool, called 
+                           <a href="https://github.com/tfarkas86/ecodatamisc/blob/main/R/export_anova.R">export_anova</a>, 
+                           automatically creates publication-ready tables from ANOVA output in R. 
+                           </p>
+                           <p>
+                           As written, the tool worked perfectly, just perfectly, on my Mac, effortlesslly turning this ugly thing:
+                           <br><br>
+                           <img src="images/blog-pics/002/anova-raw.png" alt="">
+                           <br><br>
+                           Into this: 
+                           <br><br>
+                           <img src="images/blog-pics/002/anova-pretty.png" alt="">
+                         </p>
+                         <p> 
+                           But, my client works on Windows.
+                           When he tried it ... nothing. 
+                           </p>
+                           <p>
+                           The next several weeks (of very part-time work) saw over twenty emails back and forth, 
+                           updates to the code, adjustments to his Windows environment, a few Zoom calls, 
+                           and lots, lots, lots of frustration.  
+                           </p>
+                           <p class="blog-post__excerpt">
+                           Short of debugging directly on his PC,
+                           I decided I needed to work on a Windows machine. 
+                           Any Windows machine.  
+                           So I looked up the cheapest PCs I could find at Best Buy (around $150), 
+                           and got geared up for a quick errand at 8PM on a Thursday. 
+                           </p> 
+                           <p>
+                           Then I remembered how useful I had found it to spin up Linux machines in the cloud with AWS for past projects. 
+                           Those machines were all command-line driven, and wouldn't have been all that useful in this context, 
+                           but AWS has dozens of OS offerings. 
+                           Lo and behold, Windows Server is one of them, offering access to a clean Windows GUI.  
+                           I got to work sorting out the details of creating and accessing a Windows Server machine on AWS, 
+                           and had it all working within a couple hours. 
+                           A day later, I had Rob sorted out, furiously creating gorgeous tables for his latest pub. 
+                           </p>
+                           <p>
+                           Here's what I, working on a 2015 Macbook Pro, needed to do. 
+                           </p>
+                           <h3>1. Launch An EC2 With Windows Server</h3>
+                           <p class="blog-post__excerpt">
+                           Assuming you already have 
+                           <a href="https://portal.aws.amazon.com/billing/signup#/start/email">an AWS account</a>, 
+                           navigate to the Elastic Cloud Compute (EC2) service and click "Launch Instance". 
+                           Then follow these steps: 
+                           <br>
+                           <ol>
+                                   <li>Choose a Windows Server image. I used Microsoft Windows Server 2019 Base.
+                                           Feel free to consider an option with more features, but this one qualifies for free tier.</li>
+                                   <li>Choose an instance type. What you go with depends on what you need to do. 
+                                           I went with the t2.medium, which is equivalent to one of those $150 machines I might have bought at Best Buy.</li>
+                                   <li>Add storage. The default, 30GB, wasn't enough for me. 
+                                           I bumped the root volume up to 60GB.</li>                            
+                                   <li>Configure security group. 
+                           Change the source from "Custom" to "My IP", so that only you have access to this machine. 
+                           You can add more IPs if you want other folks to have access.</li> 
+                                   <li>Click "Launch", and collect access credentials. 
+                           Unless you already have a key pair to use, create a new one. 
+                           Download the .pem file and put it somewhere safe. 
+                           Then click "Launch Instances".</li> 
+                                   <li>Once the instance is running, navigate to it's summary page, and click "Connect" at the top. 
+                                           We'll use the "RDP client" (remote desktop) approach.
+                                           Download the RDP file, 
+                                           then retrieve the password by copy-and-pasting the entire contents of your .pem file into the provided box. 
+                                           Record the resulting password somewhere safe. 
+                                   </li>
+                           </ol>
+                           
+                           <h3>2. Login To Your Instance with Microsoft Remote Desktop</h3>
+                           <p>
+                           If you don't have it already, get Microsoft Remote Desktop.
+                           It's available at the App Store, 
+                           and it permits remote login to active Windows machines. 
+                           Once MRD is installed and running, follow tese steps:
+                           </p><br>
+                           <ol>
+                                <li>In MRD, navigate to "Connections", then "Import from RDP file ...", 
+                                        and select the RDP file you downloaded in step 1.6. 
+                                        You should see a card representing your new machine in the GUI for MRD. 
+                                </li>
+                                <li>Click the new card to open a login dialog for the AWS machine. 
+                                        Enter the password you harvested in step 1.6 above and connect. 
+                                        You should see a Windows machine user login process start up from with a MRD window. 
+                                </li>
+                           </ol>
+                           <h3>3. Configure Your Windows Machine</h3>
+                           You're now up and running with a Windows machine! 
+                           You may know what to do from here, 
+                           but there are a couple configuration steps that I needed. 
+                           </p><br>
+                           <ol>
+                                   <li>
+                                   You may be prompted whether you want to open the machine for local networking. 
+                                   You probably don't want this. Just select No. 
+                                   You can change it later, if you want. 
+                                   </li>
+                                   <li>You probably want to download some programs and stuff, 
+                                           but the default settings disallow this. 
+                                           Go to Start > Server Manager > Local Server > Enhanced Security Configuration, 
+                                           then select Off for both Administrators and Users. 
+                                           Now you can download programs from the internet to your machine.
+                                   </li>
+                                   <li>Internet Explorer comes default on these images, 
+                                           and for me, almost nothing rendered properly through IE. 
+                                           I suggest downloading a different browser of your choice.
+                                   </li>
+                                   <li>Download whatever programs and utilities you need!
+                                           I downloaded git, R, and RStudio, 
+                                           along with all the R packages I needed for this project. 
+                                   </li>
+                           </ol>
+                           <p>
+                           And that's it! 
+                           If you get this basic workflow down, you can probably sort out how to spin up Linux or Mac machines, too, 
+                           but a comprehensive intro to using EC2 is well beyond the scope of this post. 
+                           Just a few more notes and caveats:
+                           </p>
+                           <ol>
+                                   <li>
+                                   I am not a cybersecurity expert. 
+                                   If you are doing sensitive work, or worry about hackers or other malfeasants, 
+                                   do a little more digging to sort out how best to improve security. 
+                                   Check out 
+                                   <a href"https://aws.amazon.com/govcloud-us/" target="_blank">AWS GovCloud</a>. 
+                                   </li>
+                                   <li>You can leave this machine up on AWS as long as you like, 
+                                           but you are charged for processing time if the instance is "Running", 
+                                           and you're not within the free-tier limits. 
+                                           If you "Stop" the instance, you will only get charged for storage, 
+                                           which is very cheap. 
+                                           You can have a machine at the ready, in the cloud, for only a few bucks a month, 
+                                           just make sure it's Stopped, or you'll be charged for processing, which is more expensive. 
+                                   </li>
+                                   <li>
+                                           When you restart, all your machine configurations, programs, and data will be there. 
+                                           But the public IP address will have changed, 
+                                           so you'll need to download a new RDP file. 
+                                   </li>
+                                   <li>
+                                           If you're sure you don't want the machine anymore, you can Terminate it, 
+                                           but you'll lose everything. 
+                                           Make sure to save any data you need before terminating. 
+                                   </li>
+                                   <li>There are alternatives to basically everything I have presented here. 
+                                           Explore and customize!
+                                   </li>
+                           </ol>                           
+                           <h4>
+                           <p class="blog-post__excerpt">
+                           </p>
+                           <p class="blog-post__excerpt">
+                           </p>
+                           <p class="blog-post__excerpt">
+
+                    </div> <!-- end blog-post__content -->
+
+                </article> <!-- blog post -->
+
+            </div> <!-- column -->
+        </div> <!-- end blog-post-wrap -->
+
+        <div class="blog-post-nav-wrap">
+            <div class="row blog-post-nav">
+                <div class="column large-6 tab-12 blog-post-nav__prev">
+                </div>
+                <div class="column large-6 tab-12 blog-post-nav__next">
+                    <a href="blog-posts/002_aws-windows.html" rel="next">
+                        <span>Next</span>
+                        Using Windows on AWS
+                    </a>
+                </div>
+            </div>
+        </div> <!-- end blog-post-nav-wrap -->
+
+    <!-- footer
+    ================================================== -->
+    <footer class="s-footer">
+        <div class="row">
+            <div class="column large-4 medium-6 w-1000-stack s-footer__social-block">
+                <ul class="s-footer__social">
+                </ul>
+            </div>
+
+            <div class="column large-7 medium-6 w-1000-stack ss-copyright">
+                <span>© Copyright Tim Farkas 2022</span> 
+                <span>Design by <a href="https://www.styleshout.com/">StyleShout</a></span>
+            </div>
+        </div>
+
+        <div class="ss-go-top">
+            <a class="smoothscroll" title="Back to Top" href="#top">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v2H6zm5 10v6h2v-6h5l-6-6-6 6z"/></svg>
+            </a>
+        </div> <!-- end ss-go-top -->
+    </footer>
+
+
+    <!-- Java Script
+    ================================================== -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

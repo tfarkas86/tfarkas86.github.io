@@ -202,7 +202,7 @@
         <div class="row section-head">
             <div class="column large-3 medium-12" data-aos="fade-up">
                 <h2>Curriculum Vitae</h2>
-                <p class="desc" style="color:#a2dbc1">An abbreviated sketch.</p>
+                <p class="desc" style="color:#a2dbc1">An abbreviated sketch. Coming Soon!</p>
             </div>
         </div>
 
@@ -226,8 +226,19 @@
                 </p>
             </div>
         </div> <!-- end section-head -->
-
+        
         <div class="row block-large-1-3 block-medium-1-2 block-mob-full folio-list">
+
+            <div class="column folio-item" data-aos="fade-up">
+                <a href="#modal-05" class="folio-item__thumb" data-lity>
+                    <img src="images/portfolio/sev-tree.png" 
+                         srcset="images/portfolio/cropland.jpg 1x, 
+                                 images/portfolio/cropland.jpg 2x" alt="">
+                    <span class="folio-item__text">
+                            Genetic Algorithms for Cropland Optimization
+                    </span>
+                </a>
+            </div> <!-- end folio-item -->
 
             <div class="column folio-item" data-aos="fade-up">
                 <a href="#modal-01" class="folio-item__thumb" data-lity>
@@ -279,6 +290,59 @@
 
         <!-- Modal Popup
         =========================================================== -->
+        <div id="modal-05" class="modal-popup lity-hide">
+
+            <img src="images/portfolio/wheat.jpg" alt="" />
+
+            <div class="modal-popup__desc">
+                <h5>Optimizing Cropland Planning with Genetic Algorithms</h5>
+                <p>
+                Farmers face a lot of complex decisions in the course of their work. One such problem
+                is to determine how much of which crops they should plant to make the most efficient use 
+                of their monetary and land resources.
+                </p>               
+                <p>
+                In simple circumstances, monocropping with whatever gives the greatest resturn on 
+                investment would be best, or maybe there's a clear approach to mixing crops given 
+                a restricted budget. 
+                But farmers often face a complex set of constraints that take these planning tasks 
+                from obvious to hard. For example, perhaps the farms have a limited budget for planting, 
+                always want to bring at least two crops to market, and don't want to plant less than 
+                one acre of any one crop. 
+                </p>
+                <p>
+                Now the problem is hard. <a href="https://en.wikipedia.org/wiki/NP-hardness">NP hard</a> 
+                to be exact, meaning that not only are the solutions 
+                not obvious, the best numerical optimization approaches can't find optimal solutions quickly. 
+                In these circumstances, combinatorial optimization approaches -- like 
+                <a href="https://en.wikipedia.org/wiki/Genetic_algorithm">genetic algorithms</a> and
+                <a href="https://en.wikipedia.org/wiki/Simulated_annealing">simulated annealing</a> -- 
+                can offer solutions in a reasonable timeframe. 
+                </p>
+                <p>
+                In this work, I used genetic algorithms, which biomimic the process of evolution by natural 
+                selection (a favorite topic of mine!) to find cropland planting configurations that 
+                have the highest yield, yet conform 
+                to a number of real-world constraints.</p>
+                <p>
+                I will detail the approach in a longer blog post, 
+                but the big trick here was to repurpose binary chromosomes to encode an arbitrary number 
+                of crops through one-hot encoding.
+                It required creating custom functions to initialize the population, perform chromosomal 
+                crossover, as well as mutation to make it work, in addition to the custom fitness function
+                that encodes the constraints. 
+                </p>
+                <p>
+                Check out the code on <a href="https://github.com/tfarkas86/cropland-ga">GitHub</a>.
+                </p>
+                <ul class="modal-popup__cat">
+                    <li>Research Biology</li>
+                </ul>
+            </div>
+
+            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
+
+        </div> <!-- end modal-01 -->
         <div id="modal-01" class="modal-popup lity-hide">
 
             <img src="images/portfolio/black-butte.jpg" alt="" />
@@ -460,6 +524,35 @@
         <!-- Blog Entries -->
         <div class="blog-entries">
             
+                <article class="blog-entry" data-aos="fade-up">
+
+                <div class="row blog-entry__header">
+                    <div class="blog-entry__avatar">
+                        <img src="images/headshot.png" alt="" />
+                    </div>
+
+                    <div class="column large-9 w-1000-stack blog-entry__title">
+                        <h3 class="h2"><a href="blog-posts/003_blown-to-bits_review.html">Book Review: Blown To Bits</a></h3>
+                    </div>
+
+                    <div class="column large-3 w-1000-stack blog-entry__meta">
+                        <span class="blog-entry__date">April 27 2022</span>
+                    </div>
+              </div> <!-- end blog-entry__header -->
+
+                <div class="row">
+
+                    <div class="column large-9 w-1000-stack blog-entry__content">
+                        <p>
+                        Blown To Bits, by Hal Albelson, et al. is the perfect combination of textbook and popular science
+                        for anybody interested in the social consequences of modern computing. 
+                        <a href="blog-single.html" class="more-link">Read More</a>
+                        </p>
+                    </div>
+
+                </div>
+
+            </article> <!-- end blog-entry -->
                 <article class="blog-entry" data-aos="fade-up">
 
                 <div class="row blog-entry__header">

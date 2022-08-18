@@ -241,6 +241,17 @@
         </div> <!-- end section-head -->
         
         <div class="row block-large-1-3 block-medium-1-2 block-mob-full folio-list">
+            
+            <div class="column folio-item" data-aos="fade-up">
+                <a href="#modal-06" class="folio-item__thumb" data-lity>
+                    <img src="images/portfolio/nm-flag.jpg" 
+                         srcset="images/portfolio/nm-flag.jpg 1x, 
+                                 images/portfolio/nm-flag.jpg 2x" alt="">
+                    <span class="folio-item__text">
+                            Web Scraper for NM Legislator Info
+                    </span>
+                </a>
+            </div> <!-- end folio-item -->
 
             <div class="column folio-item" data-aos="fade-up">
                 <a href="#modal-05" class="folio-item__thumb" data-lity>
@@ -303,6 +314,79 @@
 
         <!-- Modal Popup
         =========================================================== -->
+        <div id="modal-06" class="modal-popup lity-hide">
+
+            <img src="images/portfolio/nm-roundhouse.jpg" alt="" />
+
+            <div class="modal-popup__desc">
+                <h5>Web Scraping NM Legislator Details</h5>
+                <p>
+                This is the odd project not oriented toward analytics. At least not yet.</p>
+                <p>
+                I volunteered to do some data work for the New Mexico chapter of a major national 
+                human rights organization (who will rename nameless, hereafter "The Org"), 
+                and the opportunity to automate some time-consuming
+                and boring stuff became clear pretty quickly. So that's what I did. 
+                </p>               
+                <p>
+                The Org keeps a spreadsheet on all the NM state legislators -- House and Senate --
+                with basic info, like their names, office location, email, phone number, etc., 
+                as well as links to maps of the congressional boundaries and photographs of each 
+                legislator.  
+                </p>
+                <p>
+                I did not want to do this by hand, so spend a weekend writing a scraper in Python, 
+                using the library <a href="https://pypi.org/project/beautifulsoup4/" 
+                        target="_blank">BeautifulSoup</a>. 
+                The basic scraping script is nothing fancy. I pulled a list of all the legislators 
+                from <a href="https://nmlegis.gov/Members/Legislator_List?T=S" 
+                        target="_blank">this government website</a> 
+                and looped through them, navigating to their dedicated webpages, 
+                and scraping the relevant content. The content goes in a pandas DataFrame, then 
+                out to a CSV. 
+                </p>
+                <p>
+                Apart from the expected string post-processing and some character encoding difficulties, 
+                there were a couple more interesting aspects. 
+                </p>
+                <p>
+                First, although the legislator photos were easy enough to download automatically, 
+                but getting them in a spreadsheet took the extra step of writing a short 
+                Excel macro in VBA that searches a list of image files for the matching 
+                legislator, and inserts the photo in the right place, making all the necssary
+                row height adjustments. VBA isn't my favorite programming language, 
+                but I think this was the only way to get this done. 
+                </p>
+                <p>
+                Second, The Org wanted a lit of ZIP codes covered by each congressional district. 
+                Unfortunately, neither do districts decompose neatly into ZIPs, 
+                nor ZIPs into districts. It's a many to many relationship.  
+                Getting this done required pulling boundary shapefiles for each district 
+                and all ZCTAs (ZIP boundaries) in NM and performing a spatial join, 
+                which I did with the remarkably efficient geopandas library in Python. 
+                </p>
+                <p>
+                Next steps might be work all this into a user-friendly application 
+                (I admit, this one needs a human in the loop), but the job only needs to get run 
+                every few months, so the juice might not be worth the squeeze.
+                Might also try to associate legislator committees and sponsored legislation, 
+                but I'll wait for The Org to tell me they want it. 
+                </p>
+                <p>
+                And that was it! Good fun for a good cause. 
+                </p>
+                <p>
+                Check out the code on <a href="https://github.com/tfarkas86/aclu-nm-legislator-scrape" 
+                        target="_blank">GitHub</a>. 
+                </p>
+                <ul class="modal-popup__cat">
+                    <li>Research Biology</li>
+                </ul>
+            </div>
+
+            <a href="https://github.com/tfarkas86/aclu-nm-legislator-scrape" class="modal-popup__details">Github Link</a>
+
+        </div> <!-- end modal-05 -->
         <div id="modal-05" class="modal-popup lity-hide">
 
             <img src="images/portfolio/wheat.jpg" alt="" />
@@ -356,7 +440,7 @@
 
             <a href="https://github.com/tfarkas86/cropland-ga" class="modal-popup__details">Github Link</a>
 
-        </div> <!-- end modal-01 -->
+        </div> <!-- end modal-05 -->
         <div id="modal-01" class="modal-popup lity-hide">
 
             <img src="images/portfolio/black-butte.jpg" alt="" />
